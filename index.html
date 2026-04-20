@@ -1269,6 +1269,32 @@ function formatPrice(value) {
   return `R$ ${value.toFixed(2).replace('.', ',')}`;
 }
 
+function getPizzaDescription(item) {
+  const descriptions = {
+    'Atum com catupiry': 'Atum selecionado com catupiry cremoso e toque especial da casa.',
+    'Cinco queijos': 'Blend cremoso com cinco queijos para um sabor marcante.',
+    'Quatro queijos': 'Massa artesanal coberta com mix especial de quatro queijos.',
+    'Frango ao leite': 'Frango temperado com creme ao leite e cobertura especial.',
+    'Frango bolonha': 'Frango desfiado com bolonha e molho especial da casa.',
+    'Lombo canadense': 'Lombo canadense fatiado com queijo e molho artesanal.',
+    'Tomate seco': 'Tomate seco selecionado com queijo e tempero italiano.',
+    'Strogonoff de frango': 'Strogonoff de frango cremoso em versao especial da casa.',
+    'Camarao especial': 'Camarao temperado com cobertura especial premium.',
+    'Carne seca': 'Carne seca desfiada e bem temperada com toque da casa.',
+    'Doritos': 'Pizza especial com crocancia e sabor exclusivo Doritos.'
+  };
+
+  if (descriptions[item.name]) {
+    return descriptions[item.name];
+  }
+
+  if (item.type === 'especial') {
+    return `Pizza especial ${item.name}, preparada com ingredientes selecionados.`;
+  }
+
+  return `Pizza ${item.name} da casa, com massa artesanal e molho de tomate especial.`;
+}
+
 function renderMenu() {
   const menuGrid = document.getElementById('menuGrid');
   if (!menuGrid) return;
@@ -1280,6 +1306,7 @@ function renderMenu() {
     const badge = item.type === 'especial' ? '<span class="menu-card-badge">Especial</span>' : '';
     const image = item.type === 'especial' ? pizzaImgEspecial : pizzaImgTradicional;
     const priceText = formatPrice(item.price);
+    const description = getPizzaDescription(item);
     const message = encodeURIComponent(`Olá! Quero uma Pizza ${item.name} - ${priceText}`);
 
     return `
@@ -1290,7 +1317,7 @@ function renderMenu() {
         </div>
         <div class="menu-card-body">
           <h3>Pizza ${item.name}</h3>
-          <p>Pizza ${item.type} preparada com ingredientes selecionados.</p>
+          <p>${description}</p>
           <div class="menu-card-footer">
             <span class="menu-price">${priceText}</span>
             <a class="btn-pedir" href="https://wa.me/5516992310766?text=${message}" target="_blank" rel="noopener noreferrer">
